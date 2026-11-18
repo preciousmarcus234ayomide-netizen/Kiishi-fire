@@ -1,0 +1,246 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Public player profile, progression, loadout, and combat statistics (no PII).",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "playerId": { "type": "string", "minLength": 6, "maxLength": 20, "pattern": "^EFR-[A-Z0-9]{4,12}$" },
+        "username": { "type": "string", "minLength": 2, "maxLength": 24 },
+        "avatarUrl": { "type": "string", "maxLength": 32000 },
+        "level": { "type": "integer" },
+        "xp": { "type": "integer" },
+        "rankPoints": { "type": "integer" },
+        "rankTier": { "type": "string", "enum": ["Bronze", "Silver", "Gold", "Platinum", "Diamond", "Heroic", "Apex"] },
+        "gold": { "type": "integer" },
+        "diamonds": { "type": "integer" },
+        "selectedCharacter": { "type": "string", "maxLength": 32 },
+        "selectedWeapon": { "type": "string", "maxLength": 32 },
+        "equippedOutfit": { "type": "string", "maxLength": 32 },
+        "equippedHair": { "type": "string", "maxLength": 32 },
+        "equippedAccessory": { "type": "string", "maxLength": 32 },
+        "equippedEmote": { "type": "string", "maxLength": 32 },
+        "unlockedItems": { "type": "array" },
+        "characterLevels": { "type": "object" },
+        "stats": { "type": "object" },
+        "battlePassLevel": { "type": "integer" },
+        "battlePassXp": { "type": "integer" },
+        "hasElitePass": { "type": "boolean" },
+        "dailyStreak": { "type": "integer" },
+        "lastLoginClaimDay": { "type": "string", "maxLength": 20 },
+        "claimedMissions": { "type": "array" },
+        "banned": { "type": "boolean" },
+        "banReason": { "type": "string", "maxLength": 200 },
+        "onlineStatus": { "type": "string", "enum": ["online", "in_lobby", "in_match", "offline"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": [
+        "uid",
+        "playerId",
+        "username",
+        "level",
+        "xp",
+        "rankPoints",
+        "rankTier",
+        "gold",
+        "diamonds",
+        "selectedCharacter",
+        "selectedWeapon",
+        "equippedOutfit",
+        "equippedHair",
+        "equippedAccessory",
+        "equippedEmote",
+        "unlockedItems",
+        "banned",
+        "onlineStatus",
+        "createdAt",
+        "updatedAt"
+      ]
+    },
+    "UserPrivateInfo": {
+      "title": "UserPrivateInfo",
+      "description": "Isolated PII and account/game settings owned strictly by the user or admin.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "email": { "type": "string", "maxLength": 160 },
+        "authProvider": { "type": "string", "enum": ["google", "password", "guest"] },
+        "termsAccepted": { "type": "boolean" },
+        "privacyShowOnline": { "type": "boolean" },
+        "privacyAllowInvites": { "type": "boolean" },
+        "settings": { "type": "object" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "authProvider", "termsAccepted", "updatedAt"]
+    },
+    "Friendship": {
+      "title": "Friendship",
+      "description": "Friend request or accepted friendship between two players.",
+      "type": "object",
+      "properties": {
+        "requesterId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "recipientId": { "type": "string", "minLength": 1, "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "requesterName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "recipientName": { "type": "string", "minLength": 1, "maxLength": 32 },
+        "status": { "type": "string", "enum": ["pending", "accepted", "declined"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["requesterId", "recipientId", "requesterName", "recipientName", "status", "createdAt", "updatedAt"]
+    },
+    "MatchRecord": {
+      "title": "MatchRecord",
+      "description": "Completed match summary and rewards record.",
+      "type": "object",
+      "properties": {
+        "matchId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "ownerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "mode": { "type": "string", "maxLength": 32 },
+        "placement": { "type": "integer" },
+        "totalPlayers": { "type": "integer" },
+        "kills": { "type": "integer" },
+        "damage": { "type": "integer" },
+        "xpEarned": { "type": "integer" },
+        "goldEarned": { "type": "integer" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["matchId", "ownerId", "mode", "placement", "totalPlayers", "kills", "damage", "xpEarned", "goldEarned", "createdAt"]
+    },
+    "Transaction": {
+      "title": "Transaction",
+      "description": "In-game store purchase or top-up transaction.",
+      "type": "object",
+      "properties": {
+        "txId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "username": { "type": "string", "maxLength": 32 },
+        "itemId": { "type": "string", "maxLength": 64 },
+        "itemName": { "type": "string", "maxLength": 80 },
+        "currency": { "type": "string", "enum": ["gold", "diamonds", "usd"] },
+        "amount": { "type": "number" },
+        "status": { "type": "string", "enum": ["completed", "refunded"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["txId", "userId", "username", "itemId", "itemName", "currency", "amount", "status", "createdAt"]
+    },
+    "PlayerReport": {
+      "title": "PlayerReport",
+      "description": "Anti-cheat or behavior report submitted by a player.",
+      "type": "object",
+      "properties": {
+        "reportId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "reporterId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "targetPlayerId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "targetUsername": { "type": "string", "maxLength": 32 },
+        "reason": { "type": "string", "enum": ["aimbot", "speedhack", "toxicity", "exploiting", "other"] },
+        "details": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["open", "reviewed", "banned", "dismissed"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["reportId", "reporterId", "targetPlayerId", "targetUsername", "reason", "status", "createdAt", "updatedAt"]
+    },
+    "GameEvent": {
+      "title": "GameEvent",
+      "description": "Admin-managed live seasonal event and reward.",
+      "type": "object",
+      "properties": {
+        "eventId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "title": { "type": "string", "maxLength": 80 },
+        "description": { "type": "string", "maxLength": 300 },
+        "rewardGold": { "type": "integer" },
+        "rewardDiamonds": { "type": "integer" },
+        "active": { "type": "boolean" },
+        "createdBy": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["eventId", "title", "description", "rewardGold", "rewardDiamonds", "active", "createdBy", "createdAt", "updatedAt"]
+    },
+    "GameConfig": {
+      "title": "GameConfig",
+      "description": "Admin-managed live balance config for weapons and characters.",
+      "type": "object",
+      "properties": {
+        "configId": { "type": "string", "maxLength": 64, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "weapons": { "type": "object" },
+        "characters": { "type": "object" },
+        "updatedBy": { "type": "string", "maxLength": 128 },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["configId", "weapons", "characters", "updatedBy", "updatedAt"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Player notification or squad invite.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fromId": { "type": "string", "maxLength": 128, "pattern": "^[a-zA-Z0-9_\\-]+$" },
+        "fromName": { "type": "string", "maxLength": 32 },
+        "type": { "type": "string", "enum": ["system", "reward", "squad_invite", "friend_request"] },
+        "title": { "type": "string", "maxLength": 80 },
+        "message": { "type": "string", "maxLength": 240 },
+        "roomCode": { "type": "string", "maxLength": 24 },
+        "read": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "fromId", "fromName", "type", "title", "message", "read", "createdAt"]
+    },
+    "AdminRecord": {
+      "title": "AdminRecord",
+      "description": "Admin role assignment document.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 160 },
+        "grantedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "grantedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Player public profile, loadout, progression, and leaderboard stats."
+    },
+    "/users/{userId}/private/{docId}": {
+      "schema": { "$ref": "#/entities/UserPrivateInfo" },
+      "description": "Isolated PII (email, auth provider, privacy/controls settings)."
+    },
+    "/friends/{friendshipId}": {
+      "schema": { "$ref": "#/entities/Friendship" },
+      "description": "Friendships and pending friend requests."
+    },
+    "/matches/{matchId}": {
+      "schema": { "$ref": "#/entities/MatchRecord" },
+      "description": "Match history records owned by players."
+    },
+    "/transactions/{txId}": {
+      "schema": { "$ref": "#/entities/Transaction" },
+      "description": "In-game store purchases and diamond/gold transactions."
+    },
+    "/reports/{reportId}": {
+      "schema": { "$ref": "#/entities/PlayerReport" },
+      "description": "Player anti-cheat and misconduct reports."
+    },
+    "/events/{eventId}": {
+      "schema": { "$ref": "#/entities/GameEvent" },
+      "description": "Live seasonal events configured by admins."
+    },
+    "/gameConfig/{configId}": {
+      "schema": { "$ref": "#/entities/GameConfig" },
+      "description": "Live weapon and character stat overrides configured by admins."
+    },
+    "/notifications/{notifId}": {
+      "schema": { "$ref": "#/entities/Notification" },
+      "description": "User notifications and squad invitations."
+    },
+    "/admins/{adminId}": {
+      "schema": { "$ref": "#/entities/AdminRecord" },
+      "description": "Trusted admin UID registry."
+    }
+  }
+}

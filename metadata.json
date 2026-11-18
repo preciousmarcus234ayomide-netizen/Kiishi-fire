@@ -1,0 +1,6 @@
+{
+  "name": "Emberfall Royale",
+  "description": "3D tactical Battle Royale & Clash Squad survival shooter with real-time multiplayer, 3D character lobby, weapon ballistics, vehicles, and full progression.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
